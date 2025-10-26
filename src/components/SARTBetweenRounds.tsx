@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Video2 from "../assets/videos/Video 2.mp4";
-import Video3 from "../assets/videos/Video 3.mp4";
+import { getVideoForRound } from "../config/videos";
+import type { VideoVersion } from "../config/videos";
 
 interface SARTBetweenRoundsProps {
   roundNumber: number;
@@ -14,6 +14,7 @@ interface SARTBetweenRoundsProps {
     accuracy: number;
   };
   onNextRound: () => void;
+  videoVersion: VideoVersion;
 }
 
 export const SARTBetweenRounds = ({
@@ -21,6 +22,7 @@ export const SARTBetweenRounds = ({
   totalRounds,
   results,
   onNextRound,
+  videoVersion,
 }: SARTBetweenRoundsProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [videoWatched, setVideoWatched] = useState(false);
@@ -146,7 +148,7 @@ export const SARTBetweenRounds = ({
               onEnded={handleVideoEnd}
             >
               <source
-                src={nextRoundNumber === 2 ? Video2 : Video3}
+                src={getVideoForRound(videoVersion, nextRoundNumber)}
                 type="video/mp4"
               />
               Your browser does not support the video tag.

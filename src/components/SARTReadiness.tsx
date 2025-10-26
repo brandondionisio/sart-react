@@ -1,11 +1,16 @@
 import { useState } from "react";
-import Video1 from "../assets/videos/Video 1.mp4";
+import { getVideoForRound } from "../config/videos";
+import type { VideoVersion } from "../config/videos";
 
 interface SARTReadinessProps {
   onStartTest: () => void;
+  videoVersion: VideoVersion;
 }
 
-export const SARTReadiness = ({ onStartTest }: SARTReadinessProps) => {
+export const SARTReadiness = ({
+  onStartTest,
+  videoVersion,
+}: SARTReadinessProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [videoWatched, setVideoWatched] = useState(false);
 
@@ -87,7 +92,10 @@ export const SARTReadiness = ({ onStartTest }: SARTReadinessProps) => {
               controls
               onEnded={handleVideoEnd}
             >
-              <source src={Video1} type="video/mp4" />
+              <source
+                src={getVideoForRound(videoVersion, 1)}
+                type="video/mp4"
+              />
               Your browser does not support the video tag.
             </video>
             {videoWatched && (

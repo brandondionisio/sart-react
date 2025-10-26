@@ -1,4 +1,5 @@
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FeedbackIndicator } from "./components/FeedbackIndicator";
 import { SARTInstructions } from "./components/SARTInstructions";
 import { SARTReadiness } from "./components/SARTReadiness";
@@ -6,8 +7,13 @@ import { SARTTest } from "./components/SARTTest";
 import { Countdown } from "./components/Countdown";
 import { SARTBetweenRounds } from "./components/SARTBetweenRounds";
 import { useSART } from "./hooks/useSART";
+import type { VideoVersion } from "./config/videos";
 
-function App() {
+interface SARTTestComponentProps {
+  videoVersion: VideoVersion;
+}
+
+function SARTTestComponent({ videoVersion }: SARTTestComponentProps) {
   const {
     phase,
     currentDigit,
@@ -40,7 +46,12 @@ function App() {
           />
         )}
 
-        {phase === "readiness" && <SARTReadiness onStartTest={startRealTest} />}
+        {phase === "readiness" && (
+          <SARTReadiness
+            onStartTest={startRealTest}
+            videoVersion={videoVersion}
+          />
+        )}
 
         {phase === "test" && (
           <SARTTest
@@ -58,10 +69,23 @@ function App() {
             totalRounds={3}
             results={results}
             onNextRound={startNextRound}
+            videoVersion={videoVersion}
           />
         )}
       </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<SARTTestComponent videoVersion="v1" />} />
+        <Route path="/v1" element={<SARTTestComponent videoVersion="v1" />} />
+        <Route path="/v2" element={<SARTTestComponent videoVersion="v2" />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
